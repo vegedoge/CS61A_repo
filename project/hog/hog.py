@@ -465,6 +465,7 @@ def final_strategy(score, opponent_score):
     """Write a brief description of your final strategy.
 
     *** YOUR DESCRIPTION HERE ***
+    I'm wondering why 6 is the best option
     """
     # BEGIN PROBLEM 12
     return 6  # Replace this statement
