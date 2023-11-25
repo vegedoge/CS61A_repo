@@ -183,26 +183,24 @@ def play(strategy0, strategy1, score0=0, score1=0, dice=six_sided,
     # BEGIN PROBLEM 5
     "*** YOUR CODE HERE ***"
     
-    def player_turn(strategy, my_score, opponent_score):
+    def player_turn(strategy, my_score, opponent_score, who):
         my_score += take_turn(strategy(my_score, opponent_score), opponent_score, dice)
-        if my_score < goal:
-            while extra_turn(my_score, opponent_score):
-                my_score += take_turn(strategy(my_score, opponent_score), opponent_score, dice)
-                if my_score > goal:
-                    break
-        return my_score
+        if not extra_turn(my_score, opponent_score):
+            who = not who 
+        return my_score, who
     
     while score0 < goal and score1 < goal:
         if not who:
-            score0 = player_turn(strategy0, score0, score1)
+            score0, who = player_turn(strategy0, score0, score1, who)  
         else:
-            score1 = player_turn(strategy1, score1, score0)
-        who = not who
+            score1, who = player_turn(strategy1, score1, score0, who)
+        say = say(score0, score1)
     
     # END PROBLEM 5
     # (note that the indentation for the problem 6 prompt (***YOUR CODE HERE***) might be misleading)
     # BEGIN PROBLEM 6
     "*** YOUR CODE HERE ***"
+    
     # END PROBLEM 6
     return score0, score1
 
