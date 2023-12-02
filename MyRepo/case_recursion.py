@@ -65,3 +65,13 @@ def count_partition(n, m):
         
 # test = count_partition(6, 4)
 # print(test)
+
+# reverse a string
+def reverse_str(in_string):
+    if len(in_string) == 1:
+        return in_string
+    else:
+        return reverse_str(in_string[1:]) + in_string[0]
+    
+test = reverse_str("my seu")
+print(test)
