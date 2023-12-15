@@ -99,7 +99,7 @@ def wpm(typed, elapsed):
     # BEGIN PROBLEM 4
     "*** YOUR CODE HERE ***"
     characters = len(typed)
-    return typed / 5 * 60 / elapsed
+    return characters / 5 * 60 / elapsed
     # END PROBLEM 4
 
 
