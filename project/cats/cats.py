@@ -110,6 +110,26 @@ def autocorrect(user_word, valid_words, diff_function, limit):
     """
     # BEGIN PROBLEM 5
     "*** YOUR CODE HERE ***"
+    # return if matches
+    if any([user_word == valid_word for valid_word in valid_words]):
+        return user_word
+    else:
+        # create a list containing all gap scores
+        gap = [diff_function(user_word, valid_word, limit)
+            for valid_word in valid_words]
+        address = -1
+        for index, score in enumerate(gap):
+            if score < limit:
+                limit = score
+                address = index
+            # make sure: return the first match
+            elif score == limit and address == -1:
+                address = index
+        if address == -1:
+            return user_word
+        else:
+            return valid_words[address] 
+    
     # END PROBLEM 5
 
 
@@ -119,7 +139,28 @@ def shifty_shifts(start, goal, limit):
     their lengths.
     """
     # BEGIN PROBLEM 6
-    assert False, 'Remove this line'
+    def shift_helper(start, goal, score):
+        if score > limit:
+            return score
+        elif len(start) == 1:
+            if start[0] != goal[0]:
+                return score + 1
+            else:
+                return score
+        else:
+            if start[0] != goal[0]:
+                return shift_helper(start[1:], goal[1:], score + 1)
+            else:
+                return shift_helper(start[1:], goal[1:], score)
+                
+    gap = len(start) - len(goal)
+    if gap > 0:
+        goal = goal + gap * ' '
+    elif gap < 0:
+        start = start + (-gap) * ' '
+    
+    return shift_helper(start, goal, 0)
+    
     # END PROBLEM 6
 
 
