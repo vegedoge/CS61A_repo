@@ -203,6 +203,15 @@ def report_progress(typed, prompt, user_id, send):
     """Send a report of your id and progress so far to the multiplayer server."""
     # BEGIN PROBLEM 8
     "*** YOUR CODE HERE ***"
+    num = 0
+    for typed_word in typed:
+        if typed_word == prompt[num]:
+            num += 1
+        else:
+            break
+    percentage = num / len(prompt)
+    send({'id': user_id, 'progress': percentage})
+    return percentage
     # END PROBLEM 8
 
 
@@ -229,7 +238,16 @@ def time_per_word(times_per_player, words):
     """
     # BEGIN PROBLEM 9
     "*** YOUR CODE HERE ***"
+    players = len(times_per_player)
+    words_num = len(words)
+    times = [[0 for _ in range(words_num)] for _ in range(players)]
+    for i in range(players):
+        for j in range(words_num):
+            times[i][j] = times_per_player[i][j + 1] - times_per_player[i][j]
+    return game(words, times)
+        
     # END PROBLEM 9
+    
 
 
 def fastest_words(game):
@@ -244,6 +262,19 @@ def fastest_words(game):
     word_indices = range(len(all_words(game)))    # contains an *index* for each word
     # BEGIN PROBLEM 10
     "*** YOUR CODE HERE ***"
+    # min_player = [0 for _ in range(word_indices)]
+    fastest = [[] for _ in player_indices]
+    for word_index in word_indices:
+        min_player = min(player_indices, key = lambda player_num: time(game, player_num, word_index))
+        # x = [player_num for player_num in player_indices if time(game, player_num, word_index) == min([time(game, player_num, word_index)])]
+        word = word_at(game, word_index)
+        fastest[min_player].append(word)
+        # append can add elements to a list while assignment 
+        # can only change existing value
+    return fastest
+                
+
+    
     # END PROBLEM 10
 
 
@@ -283,7 +314,7 @@ def game_string(game):
     """A helper function that takes in a game object and returns a string representation of it"""
     return "game(%s, %s)" % (game[0], game[1])
 
-enable_multiplayer = False  # Change to True when you're ready to race.
+enable_multiplayer = True  # Change to True when you're ready to race.
 
 ##########################
 # Command Line Interface #
