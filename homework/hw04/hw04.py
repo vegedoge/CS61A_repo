@@ -20,6 +20,19 @@ def make_bank(balance):
     """
     def bank(message, amount):
         "*** YOUR CODE HERE ***"
+        nonlocal balance
+        if message == 'deposit':
+            balance += amount
+            return balance
+        elif message == 'withdraw':
+            if balance >= amount:
+                balance -= amount
+                return balance
+            else:
+                return "Insufficient funds"
+        else:
+            return "Invalid message"
+        
     return bank
 
 
@@ -52,6 +65,24 @@ def make_withdraw(balance, password):
     True
     """
     "*** YOUR CODE HERE ***"
+    attemps = []
+    def withdraw(amount, message):
+        nonlocal balance
+        nonlocal attemps
+        if len(attemps) == 3:
+            return f"Frozen account. Attempts: {str(attemps)}"
+        if message == password:
+            if amount > balance:
+                return 'Insufficient funds'
+            balance = balance - amount
+            return balance
+        else:
+            attemps.append(message)
+            return "Incorrect password"
+            
+    return withdraw
+    
+    
 
 
 def repeated(t, k):
@@ -76,6 +107,18 @@ def repeated(t, k):
     """
     assert k > 1
     "*** YOUR CODE HERE ***"
+    def repeat_helper(last, k_temp):
+        if k_temp == 1:
+            return last
+        elem = next(t)
+        if elem == last:
+            return repeat_helper(elem, k_temp - 1)
+        else:
+            return repeat_helper(elem, k)
+        
+    return repeat_helper(None, k)
+            
+
 
 
 def permutations(seq):
@@ -101,6 +144,17 @@ def permutations(seq):
     [['a', 'b'], ['b', 'a']]
     """
     "*** YOUR CODE HERE ***"
+    if len(seq) == 1:
+        yield seq
+    else:
+        remain, first = permutations(seq[1:]), seq[0]
+        for elem in remain:
+            for i in range(len(elem) + 1):
+                result = list(elem[:])
+                result.insert(i, first)
+                yield result
+    
+    
 
 
 def make_joint(withdraw, old_pass, new_pass):
@@ -142,6 +196,16 @@ def make_joint(withdraw, old_pass, new_pass):
     "Frozen account. Attempts: ['my', 'secret', 'password']"
     """
     "*** YOUR CODE HERE ***"
+    verification = withdraw(0, old_pass)
+    if type(verification) == str:
+        return verification
+    def try_withdraw(amount, input_pass):
+        if input_pass == new_pass:
+            return withdraw(amount, old_pass)
+        else:
+            return withdraw(amount, input_pass)
+    
+    return try_withdraw
 
 
 def remainders_generator(m):
@@ -176,6 +240,14 @@ def remainders_generator(m):
     11
     """
     "*** YOUR CODE HERE ***"
+    def gen_helper(i):
+        for x in naturals_generator:
+            if x % m == i:
+                yield x
+    
+    for i in range(m):
+        naturals_generator = naturals()
+        yield gen_helper(i)
 
 
 def naturals():
